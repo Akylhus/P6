@@ -67,14 +67,7 @@ window.onload = async function()
     // {
     // console.log(category);
     // }
-    document.querySelector(".gallery").innerHTML = "";
-    // fetch("http://localhost:5678/api/categories")
-    //     .then(reponse => reponse.json())
-    //     .then(body => 
-    //         {
-    //         })
-    
-    
+    document.querySelector(".gallery").innerHTML = "";    
 }
 generateImage(works);
 generateButton(categories);
