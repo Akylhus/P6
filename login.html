@@ -29,10 +29,13 @@
 		<form action="http://localhost:5678/api/users/login" method="post">
 			<label for="email">Email</label>
 			<input type="email" name="email" id="email">
-			<label for="mdp">Mot de passe</label>
-			<input type="password" name="mdp" id="mdp">
+			<label for="password">Mot de passe</label>
+			<input type="password" name="password" id="password">
             <a href="#">Mot de passe oublié</a>
 			<input class="validation" type="submit" value="Envoyer">
+			<div class="errorBox">
+				<p>Identifiant ou mot de passe incorrect</p>
+			</div>
 		</form>
 	</section>
 </main>

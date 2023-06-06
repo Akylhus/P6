@@ -4,26 +4,10 @@ const responseWorks = await fetch("http://localhost:5678/api/works");
 const works = await responseWorks.json();
 const responseCategory = await fetch("http://localhost:5678/api/categories");
 const categories = await responseCategory.json();
+const openModal = document.querySelector(".modif");
+const modal = document.querySelector(".modal");
+const modalWrapper = document.querySelector(".modal-wrapper");
 
-// const arrayCategory = async function getCategories()
-// {
-//     let categories = new Array();
-//     await fetch("http://localhost:5678/api/categories")
-//         .then(fetchCategory => fetchCategory.json())
-//         .then(categoryList => 
-//             {
-//                 for(let category of categoryList)
-//                 {
-//                     // console.log(category.id + ":" + category.name);
-//                     categories.push([category]); 
-//                     // console.log(category);
-
-//                 }
-//             }
-//             );
-//     return categories;         
-// }
-// getCategories();   
  
 //functions & events
 function generateImage(works)
@@ -60,15 +44,10 @@ function generateButton(categories)
 
 //code entry point
 
-window.onload = async function()
+window.onload = function()
 {
-    // let categoryList = await arrayCategory;
-    // for(let category of categoryList)
-    // {
-    // console.log(category);
-    // }
-    document.querySelector(".gallery").innerHTML = "";    
 }
+document.querySelector(".gallery").innerHTML = "";    
 generateImage(works);
 generateButton(categories);
 
@@ -117,6 +96,7 @@ hotelFilter.addEventListener
     }
 );
 
+//FILTER ALL
 const allFilter = document.querySelector(".filter");
 allFilter.addEventListener
 (
@@ -126,3 +106,24 @@ allFilter.addEventListener
         generateImage(works);
     }
 );
+
+//OPEN MODAL
+openModal.addEventListener
+(
+    "click", function()
+    {
+        modal.style.display = "flex";
+        modalWrapper.style.display = "block";
+        modalWrapper.classList.add("gallery");
+        modalWrapper.classList.add("gallery2");
+        generateImage(works);
+        modal.addEventListener
+        (
+            "click", function()
+            {
+                modal.style.display = "none";
+                modalWrapper.style.display = "none";
+            }
+        )
+    }
+)

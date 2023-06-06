@@ -10,13 +10,19 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script type="module" src="./assets/script.js"></script>
+	<script src="https://kit.fontawesome.com/9d71140fe6.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
-	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+	<div class="edition">
+		<i class="fa-regular fa-pen-to-square"></i>
+		<p class="editionText">Mode édition</p>
+		<button type="button" class="button">publier les changements</button>
+	</div>
+	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
-			<li class="newWindow">projets</li>
+			<li>projets</li>
 			<li>contact</li>
 			<li><a href="./login.html">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
@@ -36,7 +42,18 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<aside id="modal1" class="modal">
+			<div class="modal-wrapper">
+
+			</div>
+		</aside>
+		<div class="titleAndIcon">
+			<h2>Mes Projets</h2>
+			<div class="modif">
+				<i class="fa-regular fa-pen-to-square"></i>
+				<p>modifier</p>
+			</div>
+		</div>
 		<div class="filters">
 			<div class="filter">Tous</div>
 		</div>
