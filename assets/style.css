@@ -274,6 +274,10 @@ footer nav ul {
 	font-size: x-large;
 }
 
+.validation {
+	cursor: pointer;
+}
+
 .modif {
 	display: flex;
 	height: 30px;
@@ -294,7 +298,8 @@ footer nav ul {
 }
 
 .modal-wrapper {
-	display: none;
+	flex-wrap: wrap;
+	flex-direction: row;
 	background-color: white;
 	width: 600px;
 	max-width: calc(100vh - 20px);
@@ -303,18 +308,31 @@ footer nav ul {
 	padding: 20px;
 }
 
+.modalTitle {
+	width: 100%;
+}
+
 .gallery2 {
 	margin-top: 20px;
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content: center;
 }
 
-.gallery2 figure{
-	width: 20%;
+.gallery2 figure {
+	width: 15%;
 }
 
 .gallery2 img {
 	width: 100%;
+}
+
+.modalValidation {
+	cursor: pointer;
+	height: 50px;
+	width: 300px;
+	display: flex;
+	justify-content: center;
 }
