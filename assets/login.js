@@ -14,7 +14,8 @@ async function login(email, password)
         });
         if(responseUsers.ok)
         {
-            const token = await responseUsers.json;
+            const data = await responseUsers.json();
+            const token = data.token;
             localStorage.setItem("token", token);
             window.location.href="./index.html";        
         }
