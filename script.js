@@ -10,6 +10,7 @@ const modal2 = document.querySelector(".modal2");
 const modalValidation = document.querySelector(".modalValidation");
 const modalWrapper = document.querySelector(".modal-wrapper");
 const modalWrapper2 = document.querySelector(".modal-wrapper2");
+const arrowLeft = document.querySelector(".fa-arrow-left");
 let itemFilter;
 let apartFilter;
 let hotelFilter;
@@ -20,15 +21,17 @@ let openModal2;
 const token = localStorage.getItem("token");
 const crossClose = document.querySelectorAll(".fa-xmark");
 const logo = document.querySelector(".logo");
-const logout = document.querySelector(".toLogPage");
-const logged = function (){
-    if(token){
+const logout = document.querySelector(".toDelogPage");
+const logged = function ()
+{
+    if(token)
+    {
         return true;
-    }else{
+    }else
+    {
         return false;
     }
 }
-
 
 //functions & events
 function generateImage(works)
@@ -69,6 +72,7 @@ function generateImage2(works)
             figureElement.appendChild(imageElement);
             figureElement.appendChild(figcaptionElement);
             figureElement.appendChild(divTrash);
+            figureElement.dataset.id = works[i].id;
             divTrash.appendChild(imageTrash);
         }
 }    
@@ -104,7 +108,7 @@ crossClose.forEach(trigger => trigger.addEventListener("click", function (e)
 ));
 }
 
-//code entry point
+//code entry point ----------------------------------------------------
 
 window.onload = async function()
 {
@@ -186,39 +190,26 @@ openModal = function(e)
 modif.addEventListener("click", openModal);
 
 //HOMEPAGE UPDATE
-if(logged)
+if(logged())
 {
     document.querySelector(".edition").style.display = "flex";
+    document.querySelector(".modif").style.display = "flex";
     document.querySelector(".filters").style.display = "none";
-    document.querySelector(".toLogPage").innerText = "logout";
-    document.querySelector(".toLogPage").href = "#";
+    document.querySelector(".toLogPage").style.display = "none";
+    document.querySelector(".toDelogPage").style.display = "block";
 }
 
 //DISCONNECTED
-logo.addEventListener
-(
-    "click", function()
-{
-    localStorage.clear("token");
-    document.querySelector(".edition").style.display = "none";
-    document.querySelector(".filters").style.display = "flex";
-    document.querySelector(".toLogPage").innerText = "login";
-    document.querySelector(".toLogPage").href="./login.html";
-    logged = false;
-    window.location.reload();
-}
-);
-
 logout.addEventListener
 (
     "click", function()
 {
     localStorage.clear("token");
     document.querySelector(".edition").style.display = "none";
+    document.querySelector(".modif").style.display = "none";
     document.querySelector(".filters").style.display = "flex";
-    document.querySelector(".toLogPage").innerText = "login";
-    document.querySelector(".toLogPage").href="./login.html";
-    logged = false;
+    document.querySelector(".toLogPage").style.display = "block";
+    document.querySelector(".toDelogPage").style.display = "none";
     window.location.reload();
 }
 );
@@ -234,5 +225,42 @@ openModal2 = function(e)
 }
 
 modalValidation.addEventListener("click", openModal2);
+
+//DELETE IMAGE
+modalGallery.addEventListener("click", async function(event)
+{
+    if(event.target.classList.contains("fa-trash-can"))
+    {
+        const figure = event.target.closest("figure");
+        const worksId = figure.dataset.id;
+        const responseDelete = await fetch(`http://localhost:5678/api/works/${worksId}`,
+        {
+            method: "DELETE",
+            headers: {"Authorization": `Bearer ${token}`}
+        });
+        if(responseDelete.ok)
+        {
+            const updatedResponse = await fetch("http://localhost:5678/api/works");
+            const updatedWorks = await updatedResponse.json();
+            works = updatedWorks;
+            document.querySelector(".gallery").innerHTML = "";    
+            document.querySelector(".gallery2").innerHTML = "";    
+            generateImage(works);        
+            generateImage2(works);
+        }
+        else
+        {
+            alert("Erreur lors de la suppression");
+        }
+
+    }
+})
+
+//MODAL 2 to MODAL 1
+arrowLeft.addEventListener("click", function()
+{
+    modal2.style.display = "none";
+})
+
 }
 
