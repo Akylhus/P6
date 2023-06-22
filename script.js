@@ -22,6 +22,7 @@ const token = localStorage.getItem("token");
 const crossClose = document.querySelectorAll(".fa-xmark");
 const logo = document.querySelector(".logo");
 const logout = document.querySelector(".toDelogPage");
+const deleteAll = document.querySelector(".deleteAll");
 const logged = function ()
 {
     if(token)
@@ -51,30 +52,49 @@ function generateImage(works)
         }
 }    
 
+//ADD IMAGE ---------------------------------------------------------------------
+function uploadImage() {
+    const fileSelected = document.getElementById("file");
+    const imagePreview = document.getElementById("image");
+  
+    if (fileSelected.files && fileSelected.files[0]) {
+      const reader = new FileReader();
+  
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+      };
+  
+      reader.readAsDataURL(fileSelected.files[0]);
+    }
+  }
+
+const fileInput = document.getElementById("file"); 
+fileInput.addEventListener("change", uploadImage);
+
 //GENERATE MODALE IMAGE --------------------------------------------------
 function generateImage2(works)
 {
     for(let i = 0; i < works.length; i++)
     {
-            const figureElement = document.createElement("figure");
-            const imageElement = document.createElement("img");
-            imageElement.src = works[i].imageUrl;
-            imageElement.alt = works[i].title;
-            const divTrash = document.createElement("div");
-            divTrash.classList.add("trash");
-            const imageTrash = document.createElement("i");
-            imageTrash.classList.add("fa-regular");
-            imageTrash.classList.add("fa-trash-can");
-            const figcaptionElement = document.createElement("figcaption");
-            figcaptionElement.innerText = "éditer";
-            const divGallery = document.querySelector(".gallery2");
-            divGallery.appendChild(figureElement);
-            figureElement.appendChild(imageElement);
-            figureElement.appendChild(figcaptionElement);
-            figureElement.appendChild(divTrash);
-            figureElement.dataset.id = works[i].id;
-            divTrash.appendChild(imageTrash);
-        }
+        const figureElement = document.createElement("figure");
+        const imageElement = document.createElement("img");
+        imageElement.src = works[i].imageUrl;
+        imageElement.alt = works[i].title;
+        const divTrash = document.createElement("div");
+        divTrash.classList.add("trash");
+        const imageTrash = document.createElement("i");
+        imageTrash.classList.add("fa-regular");
+        imageTrash.classList.add("fa-trash-can");
+        const figcaptionElement = document.createElement("figcaption");
+        figcaptionElement.innerText = "éditer";
+        const divGallery = document.querySelector(".gallery2");
+        divGallery.appendChild(figureElement);
+        figureElement.appendChild(imageElement);
+        figureElement.appendChild(figcaptionElement);
+        figureElement.appendChild(divTrash);
+        figureElement.dataset.id = works[i].id;
+        divTrash.appendChild(imageTrash);
+    }
 }    
 
 // FILTER BUTTON----------------------------------------------------------       
@@ -189,7 +209,7 @@ openModal = function(e)
 
 modif.addEventListener("click", openModal);
 
-//HOMEPAGE UPDATE
+//HOMEPAGE UPDATE ------------------------------------------------------
 if(logged())
 {
     document.querySelector(".edition").style.display = "flex";
@@ -199,7 +219,7 @@ if(logged())
     document.querySelector(".toDelogPage").style.display = "block";
 }
 
-//DISCONNECTED
+//DISCONNECTED --------------------------------------------------------
 logout.addEventListener
 (
     "click", function()
@@ -226,7 +246,7 @@ openModal2 = function(e)
 
 modalValidation.addEventListener("click", openModal2);
 
-//DELETE IMAGE
+//DELETE SELECTED IMAGE ------------------------------------------------------------
 modalGallery.addEventListener("click", async function(event)
 {
     if(event.target.classList.contains("fa-trash-can"))
@@ -256,11 +276,42 @@ modalGallery.addEventListener("click", async function(event)
     }
 })
 
-//MODAL 2 to MODAL 1
+//DELETE ALL IMAGES -----------------------------------------------------------------
+deleteAll.addEventListener("click", async function()
+{
+    const figures = modalGallery.querySelectorAll("figure");
+    figures.forEach(async function(figure)
+    {
+        const dataId = figure.dataset.id;
+        console.log(dataId);
+        const responseDelete = await fetch(`http://localhost:5678/api/works/${dataId}`,
+        {
+            method: "DELETE",
+            headers: {"Authorization": `Bearer ${token}`}
+        });
+        if(responseDelete.ok)
+        {
+            const updatedResponse = await fetch("http://localhost:5678/api/works");
+            const updatedWorks = await updatedResponse.json();
+            works = updatedWorks;
+            document.querySelector(".gallery").innerHTML = "";    
+            document.querySelector(".gallery2").innerHTML = "";    
+            generateImage(works);        
+            generateImage2(works);
+        }
+        else
+        {
+            alert("Erreur lors de la suppression");
+        }
+    })
+})
+
+//MODAL 2 to MODAL 1 ----------------------------------------------------------
 arrowLeft.addEventListener("click", function()
 {
     modal2.style.display = "none";
 })
 
 }
+
 
