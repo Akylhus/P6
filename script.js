@@ -23,6 +23,10 @@ const crossClose = document.querySelectorAll(".fa-xmark");
 const logo = document.querySelector(".logo");
 const logout = document.querySelector(".toDelogPage");
 const deleteAll = document.querySelector(".deleteAll");
+const fileInput = document.getElementById("file"); 
+const imagePreview = document.getElementById("image");
+const addPhotoDiv = document.querySelector(".addPhoto");  
+const children = addPhotoDiv.children;
 const logged = function ()
 {
     if(token)
@@ -52,23 +56,27 @@ function generateImage(works)
         }
 }    
 
+
+
 //ADD IMAGE ---------------------------------------------------------------------
 function uploadImage() {
-    const fileSelected = document.getElementById("file");
-    const imagePreview = document.getElementById("image");
   
-    if (fileSelected.files && fileSelected.files[0]) {
-      const reader = new FileReader();
-  
-      reader.onload = function(e) {
+    if (fileInput.files && fileInput.files[0]) 
+    {
+        const reader = new FileReader();
+        reader.onload = function(e) {
         imagePreview.src = e.target.result;
-      };
-  
-      reader.readAsDataURL(fileSelected.files[0]);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+        Array.from(children).forEach(function (child)
+        {
+            child.style.display = "none";
+            imagePreview.style.display = "flex";
+        })
+
     }
   }
 
-const fileInput = document.getElementById("file"); 
 fileInput.addEventListener("change", uploadImage);
 
 //GENERATE MODALE IMAGE --------------------------------------------------
@@ -94,8 +102,20 @@ function generateImage2(works)
         figureElement.appendChild(divTrash);
         figureElement.dataset.id = works[i].id;
         divTrash.appendChild(imageTrash);
+        if(works[i].id === 1)
+        {
+            const divIconeDirection = document.createElement("div");
+            divIconeDirection.classList.add("divDirection");
+            const imageDirection = document.createElement("i");
+            imageDirection.classList.add("fa-solid");
+            imageDirection.classList.add("fa-arrows-up-down-left-right");
+            figureElement.appendChild(divIconeDirection);
+            divIconeDirection.appendChild(imageDirection);        
+        }
     }
 }    
+
+
 
 // FILTER BUTTON----------------------------------------------------------       
 function generateButton(categories)
@@ -114,7 +134,7 @@ function generateButton(categories)
 //CLOSE MODAL ---------------------------------------------------------------
 function closeByCross()
 {
-crossClose.forEach(trigger => trigger.addEventListener("click", function (e)
+crossClose.forEach(trigger => trigger.addEventListener("click", function(e)
 {
     if (modal === null) return
     e.preventDefault();
@@ -124,9 +144,36 @@ crossClose.forEach(trigger => trigger.addEventListener("click", function (e)
     modal2.style.display = "none";
     modal2.setAttribute("aria-hidden", "true");
     modal2.removeAttribute("aria-modal");
+    Array.from(children).forEach(function (child)
+    {
+        child.style.display = "flex";
+        imagePreview.src = "#";
+        fileInput.style.display = "none";
+    })
 }
 ));
 }
+
+function closeOutModal() {
+    document.addEventListener("click", function(e) {
+      const target = e.target;
+      if (modalWrapper.contains(target) || modalWrapper2.contains(target)) return;
+      if (modal.contains(target) || modal2.contains(target)) {
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+        modal.removeAttribute("aria-modal");
+        modal2.style.display = "none";
+        modal2.setAttribute("aria-hidden", "true");
+        modal2.removeAttribute("aria-modal");
+        Array.from(children).forEach(function (child)
+        {
+            child.style.display = "flex";
+            imagePreview.src = "#";
+            fileInput.style.display = "none";
+        })    
+      }
+    });
+  }
 
 //code entry point ----------------------------------------------------
 
@@ -205,6 +252,7 @@ openModal = function(e)
     modal.removeAttribute("aria-hidden");
     modal.setAttribute("aria-modal", "true");
     closeByCross();
+    closeOutModal();
 }
 
 modif.addEventListener("click", openModal);
@@ -242,6 +290,7 @@ openModal2 = function(e)
     modal2.removeAttribute("aria-hidden");
     modal2.setAttribute("aria-modal", "true");
     closeByCross();
+    closeOutModal();
 }
 
 modalValidation.addEventListener("click", openModal2);
@@ -310,6 +359,12 @@ deleteAll.addEventListener("click", async function()
 arrowLeft.addEventListener("click", function()
 {
     modal2.style.display = "none";
+    Array.from(children).forEach(function (child)
+    {
+        child.style.display = "flex";
+        imagePreview.src = "#";
+        fileInput.style.display = "none";
+    })
 })
 
 }
