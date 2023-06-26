@@ -27,6 +27,8 @@ const fileInput = document.getElementById("file");
 const imagePreview = document.getElementById("image");
 const addPhotoDiv = document.querySelector(".addPhoto");  
 const children = addPhotoDiv.children;
+const formElement = document.getElementById("formImage");
+
 const logged = function ()
 {
     if(token)
@@ -56,6 +58,7 @@ function generateImage(works)
         }
 }    
 
+//POST DATA ---------------------------------------------------------------
 
 
 //ADD IMAGE ---------------------------------------------------------------------
@@ -367,6 +370,35 @@ arrowLeft.addEventListener("click", function()
     })
 })
 
-}
+formElement.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+    let formData = new FormData();
+    let image = fileInput.files[0];
+    let title = document.querySelector(".addTitle").value;
+    let category = document.querySelector(".addCategory").value;
+    formData.append("image", image);
+    console.log(image);
+    formData.append("title", title);
+    console.log(title);
+    formData.append("category", category);
+    console.log(category);
+    console.log(formData);
+    const response = await fetch("http://localhost:5678/api/works", 
+    {
+        method: "POST",
+        body: formData,
+        headers: 
+        {
+            "Accept": "multipart/form-data",
+            "Authorization": `Bearer ${token}`,
+        }
+    })
+    if(response.ok)
+    {
+        alert("importation réussi")
+    }else("KO")
+})
 
+}
 

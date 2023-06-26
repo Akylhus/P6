@@ -379,7 +379,6 @@ footer nav ul {
 
 .arrowCross {
 	display: flex;
-	margin-bottom: 20px;
 }
 
 .fa-xmark {
@@ -458,7 +457,7 @@ footer nav ul {
 	align-items: center;
 	margin: 0 auto 10px auto;
 	width: 420px;
-	height: 250px;
+	height: 230px;
 	background-color: #E8F1F6;
 }
 
@@ -494,7 +493,7 @@ footer nav ul {
 }
 
 .labelPhoto {
-	margin-left: 8%;
+
 }
 
 .inputPhoto {
@@ -508,6 +507,7 @@ footer nav ul {
 
 .modal-wrapper2 .bar {
 	width: 400px;
+	margin: 5px;
 }
 
 #modalSend {
@@ -515,6 +515,7 @@ footer nav ul {
 	border: none;
 	height: 35px;
 	width: 235px;
+	margin: 0 auto 0 auto;
 }
 
 #image {
@@ -523,4 +524,11 @@ footer nav ul {
 	z-index: 100;
 	max-width: 400px;
 	max-height: 180px;
+}
+
+#formImage {
+	width: 420px;
+	display: flex;
+	flex-direction: column;
+	margin: auto;
 }
