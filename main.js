@@ -5,11 +5,12 @@ let works;
 let responseCategory; 
 let categories; 
 const modif = document.querySelector(".modif");
-const modal = document.querySelector(".modal");
-const modal2 = document.querySelector(".modal2");
+const modifSophie = document.querySelector(".modifSophie");
+export const modal = document.querySelector(".modal");
+export const modalAdd = document.querySelector(".modalAdd");
 const modalValidation = document.querySelector(".modalValidation");
-const modalWrapper = document.querySelector(".modal-wrapper");
-const modalWrapper2 = document.querySelector(".modal-wrapper2");
+export const modalWrapper = document.querySelector(".modal-wrapper");
+export const modalWrapper2 = document.querySelector(".modal-wrapper2");
 const arrowLeft = document.querySelector(".fa-arrow-left");
 let itemFilter;
 let apartFilter;
@@ -17,18 +18,19 @@ let hotelFilter;
 let allFilter;
 const modalGallery = document.querySelector(".gallery2");
 let openModal;
-let openModal2;
+let openModalAdd;
 const token = localStorage.getItem("token");
-const crossClose = document.querySelectorAll(".fa-xmark");
+export const crossClose = document.querySelectorAll(".fa-xmark");
 const logo = document.querySelector(".logo");
 const logout = document.querySelector(".toDelogPage");
 const deleteAll = document.querySelector(".deleteAll");
-const fileInput = document.getElementById("file"); 
-const imagePreview = document.getElementById("image");
+export const fileInput = document.getElementById("file"); 
+export const imagePreview = document.getElementById("image");
 const addPhotoDiv = document.querySelector(".addPhoto");  
-const children = addPhotoDiv.children;
+export const children = addPhotoDiv.children;
 const formElement = document.getElementById("formImage");
-
+const boxModal = document.querySelector(".boxModal");
+const textBox = document.querySelector(".textBox");
 const logged = function ()
 {
     if(token)
@@ -41,142 +43,18 @@ const logged = function ()
 }
 
 //functions & events
-function generateImage(works)
+import 
 {
-    for(let i = 0; i < works.length; i++)
-    {
-            const figureElement = document.createElement("figure");
-            const imageElement = document.createElement("img");
-            imageElement.src = works[i].imageUrl;
-            imageElement.alt = works[i].title;
-            const figcaptionElement = document.createElement("figcaption");
-            figcaptionElement.innerText = works[i].title;
-            const divGallery = document.querySelector(".gallery");
-            divGallery.appendChild(figureElement);
-            figureElement.appendChild(imageElement);
-            figureElement.appendChild(figcaptionElement);
-        }
-}    
+    generateImage,
+    update,
+    uploadImage,
+    generateImage2,
+    generateButton,
+    closeByCross,
+    closeOutModal
 
-//POST DATA ---------------------------------------------------------------
-
-
-//ADD IMAGE ---------------------------------------------------------------------
-function uploadImage() {
-  
-    if (fileInput.files && fileInput.files[0]) 
-    {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-        imagePreview.src = e.target.result;
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-        Array.from(children).forEach(function (child)
-        {
-            child.style.display = "none";
-            imagePreview.style.display = "flex";
-        })
-
-    }
-  }
-
+} from "./function.js";
 fileInput.addEventListener("change", uploadImage);
-
-//GENERATE MODALE IMAGE --------------------------------------------------
-function generateImage2(works)
-{
-    for(let i = 0; i < works.length; i++)
-    {
-        const figureElement = document.createElement("figure");
-        const imageElement = document.createElement("img");
-        imageElement.src = works[i].imageUrl;
-        imageElement.alt = works[i].title;
-        const divTrash = document.createElement("div");
-        divTrash.classList.add("trash");
-        const imageTrash = document.createElement("i");
-        imageTrash.classList.add("fa-regular");
-        imageTrash.classList.add("fa-trash-can");
-        const figcaptionElement = document.createElement("figcaption");
-        figcaptionElement.innerText = "éditer";
-        const divGallery = document.querySelector(".gallery2");
-        divGallery.appendChild(figureElement);
-        figureElement.appendChild(imageElement);
-        figureElement.appendChild(figcaptionElement);
-        figureElement.appendChild(divTrash);
-        figureElement.dataset.id = works[i].id;
-        divTrash.appendChild(imageTrash);
-        if(works[i].id === 1)
-        {
-            const divIconeDirection = document.createElement("div");
-            divIconeDirection.classList.add("divDirection");
-            const imageDirection = document.createElement("i");
-            imageDirection.classList.add("fa-solid");
-            imageDirection.classList.add("fa-arrows-up-down-left-right");
-            figureElement.appendChild(divIconeDirection);
-            divIconeDirection.appendChild(imageDirection);        
-        }
-    }
-}    
-
-
-
-// FILTER BUTTON----------------------------------------------------------       
-function generateButton(categories)
-{
-    for (let i = 0; i < categories.length; i++)
-    {   
-        const divFilter = document.createElement("div");
-        divFilter.innerText = categories[i].name;
-        divFilter.classList.add("filter");
-        divFilter.classList.add("filter"+categories[i].id);
-        const divFilters = document.querySelector(".filters");
-        divFilters.appendChild(divFilter);
-    }    
-}
-
-//CLOSE MODAL ---------------------------------------------------------------
-function closeByCross()
-{
-crossClose.forEach(trigger => trigger.addEventListener("click", function(e)
-{
-    if (modal === null) return
-    e.preventDefault();
-    modal.style.display = "none";
-    modal.setAttribute("aria-hidden", "true");
-    modal.removeAttribute("aria-modal");
-    modal2.style.display = "none";
-    modal2.setAttribute("aria-hidden", "true");
-    modal2.removeAttribute("aria-modal");
-    Array.from(children).forEach(function (child)
-    {
-        child.style.display = "flex";
-        imagePreview.src = "#";
-        fileInput.style.display = "none";
-    })
-}
-));
-}
-
-function closeOutModal() {
-    document.addEventListener("click", function(e) {
-      const target = e.target;
-      if (modalWrapper.contains(target) || modalWrapper2.contains(target)) return;
-      if (modal.contains(target) || modal2.contains(target)) {
-        modal.style.display = "none";
-        modal.setAttribute("aria-hidden", "true");
-        modal.removeAttribute("aria-modal");
-        modal2.style.display = "none";
-        modal2.setAttribute("aria-hidden", "true");
-        modal2.removeAttribute("aria-modal");
-        Array.from(children).forEach(function (child)
-        {
-            child.style.display = "flex";
-            imagePreview.src = "#";
-            fileInput.style.display = "none";
-        })    
-      }
-    });
-  }
 
 //code entry point ----------------------------------------------------
 
@@ -254,6 +132,7 @@ openModal = function(e)
     modal.style.display = "flex";
     modal.removeAttribute("aria-hidden");
     modal.setAttribute("aria-modal", "true");
+    document.querySelector(".modifArticle").style.display = "flex";
     closeByCross();
     closeOutModal();
 }
@@ -264,7 +143,8 @@ modif.addEventListener("click", openModal);
 if(logged())
 {
     document.querySelector(".edition").style.display = "flex";
-    document.querySelector(".modif").style.display = "flex";
+    modif.style.display = "flex";
+    modifSophie.style.display = "flex";
     document.querySelector(".filters").style.display = "none";
     document.querySelector(".toLogPage").style.display = "none";
     document.querySelector(".toDelogPage").style.display = "block";
@@ -285,18 +165,18 @@ logout.addEventListener
 }
 );
 
-//OPEN MODALE 2 ------------------------------------------------------
-openModal2 = function(e)
+//OPEN MODALE ADD IMAGE ------------------------------------------------------
+openModalAdd = function(e)
 {
     e.preventDefault();
-    modal2.style.display = "flex";
-    modal2.removeAttribute("aria-hidden");
-    modal2.setAttribute("aria-modal", "true");
+    modalAdd.style.display = "flex";
+    modalAdd.removeAttribute("aria-hidden");
+    modalAdd.setAttribute("aria-modal", "true");
     closeByCross();
     closeOutModal();
 }
 
-modalValidation.addEventListener("click", openModal2);
+modalValidation.addEventListener("click", openModalAdd);
 
 //DELETE SELECTED IMAGE ------------------------------------------------------------
 modalGallery.addEventListener("click", async function(event)
@@ -361,15 +241,19 @@ deleteAll.addEventListener("click", async function()
 //MODAL 2 to MODAL 1 ----------------------------------------------------------
 arrowLeft.addEventListener("click", function()
 {
-    modal2.style.display = "none";
+    modalAdd.style.display = "none";
     Array.from(children).forEach(function (child)
     {
         child.style.display = "flex";
         imagePreview.src = "#";
         fileInput.style.display = "none";
+        boxModal.style.display = "none";
+        document.querySelector(".addTitle").value = "";
+        document.querySelector(".addCategory").value = "";
     })
 })
 
+//ADD IMAGE -------------------------------------------------------------------
 formElement.addEventListener("submit", async function (event)
 {
     event.preventDefault();
@@ -396,8 +280,16 @@ formElement.addEventListener("submit", async function (event)
     })
     if(response.ok)
     {
-        alert("importation réussi")
-    }else("KO")
+        update(works);
+        boxModal.style.display = "flex";
+        boxModal.style.background = "#b2ff89";
+        textBox.innerHTML = "Image ajouté avec succès.";
+    }else
+    {
+        boxModal.style.display = "flex";
+        boxModal.style.background = "#ff8989";
+        textBox.innerHTML = "Erreur. Veuillez réessayer."
+    }    
 })
 
 }
