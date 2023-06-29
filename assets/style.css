@@ -55,6 +55,7 @@ body {
 }
 header {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	margin: 50px 0
 }
@@ -153,8 +154,9 @@ li:hover {
 }
 
 .gallery {
+	margin-left: 5%;
 	margin-top: 20px;
-	width: 100%;
+	width: 95%;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
@@ -163,11 +165,10 @@ li:hover {
 
 .gallery img {
 	width: 100%;
-
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -214,3 +215,365 @@ footer nav ul {
 	margin: 2em
 }
 
+.errorBox {
+	display: none;
+	text-align: center;
+	background-color: #bcbababb;
+	margin: auto;
+	padding: 10px;
+	border: 1px solid #888;
+	width: 60%;
+  }
+
+.edition {
+	display: none;
+	max-width: none;
+	width: 1600px;
+	margin-top: -50px;
+	margin-bottom: 10px;
+	background-color: black;
+	height: 60px;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+}
+
+.fa-pen {
+	color: aqua;
+	justify-content: center;
+}
+
+.editionText {
+	color: white;
+}
+
+.button {
+	display: flex;
+	font-family: 'Syne';
+	color: black;
+	background-color: white;
+	width: 230px;
+	height: 40px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 30px ;
+}
+
+.fa-pen-to-square {
+	color: white;
+	font-size: x-large;
+}
+
+.titleAndIcon {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+}
+
+.titleAndIcon .fa-pen-to-square {
+	color: black;
+	font-size: x-large;
+}
+
+.toLogPage {
+	text-decoration: none;
+	color: black;
+}
+
+.toDelogPage {
+	display: none;
+	text-decoration: none;
+	color: black;
+	margin-left: auto;
+}
+
+.validation {
+	cursor: pointer;
+}
+
+.modif {
+	display: none;
+	height: 30px;
+	align-items: center;
+	cursor: pointer;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.modalAdd {
+	display: none;
+	position: fixed;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.modal-wrapper {
+	display: flex;
+	border-radius: 20px;
+	flex-direction: column;
+	background-color: white;
+	width: 500px;
+	height: 550px;
+	max-width: calc(100vh - 20px);
+	max-height: calc(100vh - 20px);
+	overflow: auto;
+	padding: 20px;
+}
+
+.modalTitle {
+	display: flex;
+	justify-content: center;
+	color: black;
+	width: 100%;
+	height: 60px;
+}
+
+.gallery2 {
+	display: flex;
+	position: relative;
+	gap: 10px;
+	margin: auto;
+	padding-left: 12%;
+	width: 420px;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+
+.gallery2 figure {
+	width: 15%;
+	position: relative;
+}
+
+.gallery2 img {
+	width: 100%;
+}
+
+.bar {
+	display: flex;
+	margin: 40px auto 0 auto;
+	width: 68%;
+	border: 1px solid lightgrey;
+
+}
+
+.modalValidation {
+	cursor: pointer;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+}
+
+.arrowCross {
+	display: flex;
+	margin: 0 23px 0 10px;
+}
+
+.fa-xmark {
+	width: 20px;
+	display: flex;
+	justify-content: end;
+	margin-left: 90%;
+	font-size: x-large;
+	cursor: pointer;
+}
+
+.fa-arrow-left {
+	width: 20px;
+	display: flex;
+	justify-content: flex-start;
+	font-size: x-large;
+	cursor: pointer;
+}
+
+.trash{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 5%;
+	right: 5%;
+	height: 15px;
+	width: 15px;
+	background-color: black;
+}
+
+.fa-trash-can {
+	font-size: x-small;
+	color: white;
+	display: flex;
+}
+
+.divDirection{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 5%;
+	right: 35%;
+	height: 15px;
+	width: 15px;
+	background-color: black;
+}
+
+.fa-arrows-up-down-left-right {
+	font-size: x-small;
+	color: white;
+	display: flex;
+}
+
+
+.deleteAll {
+	display: flex;
+	border: none;
+	background-color: transparent;
+	justify-content: center;
+	color: orangered;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.modal-wrapper2 {
+	display: flex;
+	flex-direction: column;
+}
+
+.addPhoto {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: -80px auto 10px auto;
+	width: 350px;
+	height: 180px;
+	background-color: #E8F1F6;
+}
+
+.addPhoto p {
+	color: #444444;
+}
+
+.fa-image {
+	font-size: 60px;
+	color: #B9C5CC;
+}
+
+.labelFile {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 20px;
+	background-color:#CBD6DC;
+	border: none;
+	border-radius: 50px;
+	width: 170px;
+	height: 35px;
+	color: #306685;
+	cursor: pointer;
+}
+
+.labelFile:hover {
+    color: #25a5c4;
+}
+
+.inputFile {
+    display: none;
+}
+
+.labelPhoto {
+
+}
+
+.inputPhoto {
+	margin: 5px auto 10px auto;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border-radius: 5px;
+	border: none;
+	width: 410px;
+	height: 50px;
+}
+
+.modal-wrapper2 .bar {
+	width: 400px;
+	margin: 5px;
+}
+
+#modalSend {
+	border: none;
+	height: 35px;
+	width: 235px;
+	margin: 15px auto 10px auto;
+}
+
+#image {
+	display: flex;
+	position: absolute;
+	z-index: 100;
+	max-width: 400px;
+	max-height: 180px;
+}
+
+#formImage {
+	width: 420px;
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+}
+
+.boxModal {
+	display: none;
+	text-align: center;
+	justify-content: center;
+	margin: auto;
+	padding: 10px;
+	border: 1px solid black;
+	width: 60%;
+  }
+
+.modifSophie{
+	margin-left: 10%;
+	display: none;
+	height: 30px;
+	align-items: center;
+	cursor: pointer;
+  }
+
+.modifSophie .fa-pen-to-square{
+	color: black;
+	margin-right: 10px;
+  }
+
+.modifSophie p{
+	margin-top: 10px;
+}
+
+.modifArticle{
+	display: none;
+	margin: -40px 0 20px 0;
+	height: 30px;
+	cursor: pointer;
+	align-items:flex-start;
+}
+
+.modifArticle .fa-pen-to-square{
+	color: black;
+	margin-right: 10px;
+  }
+
+.modifArticle p{
+	margin-top: 10px;
+}
