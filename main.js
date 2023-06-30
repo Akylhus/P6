@@ -1,5 +1,4 @@
 //variable & constante declaration
-let i= 0;
 let responseWorks; 
 let works; 
 let responseCategory; 
@@ -21,7 +20,6 @@ let openModal;
 let openModalAdd;
 const token = localStorage.getItem("token");
 export const crossClose = document.querySelectorAll(".fa-xmark");
-const logo = document.querySelector(".logo");
 const logout = document.querySelector(".toDelogPage");
 const deleteAll = document.querySelector(".deleteAll");
 export const fileInput = document.getElementById("file"); 
@@ -29,8 +27,14 @@ export const imagePreview = document.getElementById("image");
 const addPhotoDiv = document.querySelector(".addPhoto");  
 export const children = addPhotoDiv.children;
 const formElement = document.getElementById("formImage");
-const boxModal = document.querySelector(".boxModal");
+export const boxModal = document.querySelector(".boxModal");
 const textBox = document.querySelector(".textBox");
+export const inputFile = document.querySelector(".inputFile");
+export const inputTitle = document.querySelector(".addTitle");
+export const inputCategory = document.querySelector(".addCategory");
+export const modalSend = document.getElementById("modalSend");
+
+
 const logged = function ()
 {
     if(token)
@@ -45,14 +49,15 @@ const logged = function ()
 //functions & events
 import 
 {
-    generateImage,
+    generateIndexImage,
     update,
     uploadImage,
-    generateImage2,
+    reset,
+    generateModalImage,
     generateButton,
     closeByCross,
+    check,
     closeOutModal
-
 } from "./function.js";
 fileInput.addEventListener("change", uploadImage);
 
@@ -65,8 +70,8 @@ window.onload = async function()
     responseCategory = await fetch("http://localhost:5678/api/categories");
     categories = await responseCategory.json();
     document.querySelector(".gallery").innerHTML = "";    
-    generateImage(works);
-    generateImage2(works);
+    generateIndexImage(works);
+    generateModalImage(works);
     generateButton(categories);
     itemFilter = document.querySelector(".filter1");
     apartFilter = document.querySelector(".filter2");
@@ -74,56 +79,44 @@ window.onload = async function()
     allFilter = document.querySelector(".filter");
 
 //FILTER ITEM---------------------------------------------------------
-itemFilter.addEventListener
-(
-"click", function()
+itemFilter.addEventListener("click", function()
+{
+    const itemsfilter = works.filter(function (item)
     {
-        const itemsfilter = works.filter(function (item)
-        {
-            return item.categoryId == 1;
-        })
-        document.querySelector(".gallery").innerHTML = "";
-        generateImage(itemsfilter);
-    }
-);
+        return item.categoryId == 1;
+    })
+    document.querySelector(".gallery").innerHTML = "";
+    generateIndexImage(itemsfilter);
+});
 
 //FILTER APART --------------------------------------------------------
-apartFilter.addEventListener
-(
-"click", function()
+apartFilter.addEventListener("click", function()
+{
+    const apartsfilter = works.filter(function (apart)
     {
-        const apartsfilter = works.filter(function (apart)
-        {
-            return apart.categoryId == 2;   
-        })
-        document.querySelector(".gallery").innerHTML = "";
-        generateImage(apartsfilter);
-    }
-);
+        return apart.categoryId == 2;   
+    })
+    document.querySelector(".gallery").innerHTML = "";
+    generateIndexImage(apartsfilter);
+});
 
 //FILTER HOTEL ---------------------------------------------------------
-hotelFilter.addEventListener
-(
-"click", function()
+hotelFilter.addEventListener("click", function()
+{
+    const hotelsfilter = works.filter(function (hotel)
     {
-        const hotelsfilter = works.filter(function (hotel)
-        {
-            return hotel.categoryId == 3;   
-        })
-        document.querySelector(".gallery").innerHTML = "";
-        generateImage(hotelsfilter);
-    }
-);
+        return hotel.categoryId == 3;   
+    })
+    document.querySelector(".gallery").innerHTML = "";
+    generateIndexImage(hotelsfilter);
+});
 
 //FILTER ALL ------------------------------------------------------------
-allFilter.addEventListener
-(
-    "click", function()
-    {
-        document.querySelector(".gallery").innerHTML = "";
-        generateImage(works);
-    }
-    );
+allFilter.addEventListener("click", function()
+{
+    document.querySelector(".gallery").innerHTML = "";
+    generateIndexImage(works);
+});
 
 //OPEN MODAL ---------------------------------------------------------------    
 openModal = function(e)
@@ -151,9 +144,7 @@ if(logged())
 }
 
 //DISCONNECTED --------------------------------------------------------
-logout.addEventListener
-(
-    "click", function()
+logout.addEventListener("click", function()
 {
     localStorage.clear("token");
     document.querySelector(".edition").style.display = "none";
@@ -162,8 +153,7 @@ logout.addEventListener
     document.querySelector(".toLogPage").style.display = "block";
     document.querySelector(".toDelogPage").style.display = "none";
     window.location.reload();
-}
-);
+});
 
 //OPEN MODALE ADD IMAGE ------------------------------------------------------
 openModalAdd = function(e)
@@ -174,6 +164,10 @@ openModalAdd = function(e)
     modalAdd.setAttribute("aria-modal", "true");
     closeByCross();
     closeOutModal();
+    inputTitle.addEventListener("input", check);
+    inputCategory.addEventListener("input", check);
+    inputFile.addEventListener("change", check);
+    reset();
 }
 
 modalValidation.addEventListener("click", openModalAdd);
@@ -197,16 +191,15 @@ modalGallery.addEventListener("click", async function(event)
             works = updatedWorks;
             document.querySelector(".gallery").innerHTML = "";    
             document.querySelector(".gallery2").innerHTML = "";    
-            generateImage(works);        
-            generateImage2(works);
+            generateIndexImage(works);        
+            generateModalImage(works);
         }
         else
         {
             alert("Erreur lors de la suppression");
         }
-
     }
-})
+});
 
 //DELETE ALL IMAGES -----------------------------------------------------------------
 deleteAll.addEventListener("click", async function()
@@ -215,7 +208,6 @@ deleteAll.addEventListener("click", async function()
     figures.forEach(async function(figure)
     {
         const dataId = figure.dataset.id;
-        console.log(dataId);
         const responseDelete = await fetch(`http://localhost:5678/api/works/${dataId}`,
         {
             method: "DELETE",
@@ -228,30 +220,27 @@ deleteAll.addEventListener("click", async function()
             works = updatedWorks;
             document.querySelector(".gallery").innerHTML = "";    
             document.querySelector(".gallery2").innerHTML = "";    
-            generateImage(works);        
-            generateImage2(works);
+            generateIndexImage(works);        
+            generateModalImage(works);
         }
         else
         {
             alert("Erreur lors de la suppression");
         }
-    })
-})
+    });
+});
 
 //MODAL 2 to MODAL 1 ----------------------------------------------------------
 arrowLeft.addEventListener("click", function()
 {
     modalAdd.style.display = "none";
-    Array.from(children).forEach(function (child)
+    Array.from(children).forEach(function(child)
     {
         child.style.display = "flex";
-        imagePreview.src = "#";
         fileInput.style.display = "none";
         boxModal.style.display = "none";
-        document.querySelector(".addTitle").value = "";
-        document.querySelector(".addCategory").value = "";
-    })
-})
+    });
+});
 
 //ADD IMAGE -------------------------------------------------------------------
 formElement.addEventListener("submit", async function (event)
@@ -262,12 +251,8 @@ formElement.addEventListener("submit", async function (event)
     let title = document.querySelector(".addTitle").value;
     let category = document.querySelector(".addCategory").value;
     formData.append("image", image);
-    console.log(image);
     formData.append("title", title);
-    console.log(title);
     formData.append("category", category);
-    console.log(category);
-    console.log(formData);
     const response = await fetch("http://localhost:5678/api/works", 
     {
         method: "POST",
@@ -290,7 +275,7 @@ formElement.addEventListener("submit", async function (event)
         boxModal.style.background = "#ff8989";
         textBox.innerHTML = "Erreur. Veuillez réessayer."
     }    
-})
+});
 
 }
 
