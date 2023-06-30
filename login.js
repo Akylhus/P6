@@ -1,6 +1,7 @@
 //variable & constante declaration
 let errorBox = document.querySelector(".errorBox");
 const validation = document.querySelector(".validation");
+
 //functions & events
 
 //Fonction d'authentification
@@ -34,5 +35,4 @@ validation.addEventListener("click", function(event)
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value; 
     login(email, password);
-}
-)
+})

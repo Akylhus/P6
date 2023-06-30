@@ -8,42 +8,46 @@ import
     modalAdd, 
     fileInput, 
     children, 
-    imagePreview
+    inputCategory,
+    inputTitle,
+    inputFile,
+    imagePreview,
+    modalSend,
+    boxModal
 } from "./main.js";
 
 //FUNCTION TO GENERATE IMAGES ON THE INDEX PAGE----------------------------
-export function generateImage(works)
+export function generateIndexImage(works)
 {
     for(let i = 0; i < works.length; i++)
     {
-            const figureElement = document.createElement("figure");
-            const imageElement = document.createElement("img");
-            imageElement.src = works[i].imageUrl;
-            imageElement.alt = works[i].title;
-            const figcaptionElement = document.createElement("figcaption");
-            figcaptionElement.innerText = works[i].title;
-            const divGallery = document.querySelector(".gallery");
-            divGallery.appendChild(figureElement);
-            figureElement.appendChild(imageElement);
-            figureElement.appendChild(figcaptionElement);
-        }
+        const figureElement = document.createElement("figure");
+        const imageElement = document.createElement("img");
+        imageElement.src = works[i].imageUrl;
+        imageElement.alt = works[i].title;
+        const figcaptionElement = document.createElement("figcaption");
+        figcaptionElement.innerText = works[i].title;
+        const divGallery = document.querySelector(".gallery");
+        divGallery.appendChild(figureElement);
+        figureElement.appendChild(imageElement);
+        figureElement.appendChild(figcaptionElement);
+    }
 }    
 
 //FUNCTION TO UPDATE GALLERY---------------------------------------------
 export async function update(works)
 {
-const updatedResponse = await fetch("http://localhost:5678/api/works");
-const updatedWorks = await updatedResponse.json();
-works = updatedWorks;
-document.querySelector(".gallery").innerHTML = "";    
-document.querySelector(".gallery2").innerHTML = "";    
-generateImage(works);        
-generateImage2(works);
+    const updatedResponse = await fetch("http://localhost:5678/api/works");
+    const updatedWorks = await updatedResponse.json();
+    works = updatedWorks;
+    document.querySelector(".gallery").innerHTML = "";    
+    document.querySelector(".gallery2").innerHTML = "";    
+    generateIndexImage(works);        
+    generateModalImage(works);
 }
 
 //FUNCTION TO UPLOAD IMAGES ON THE MODAL-------------------------------------
 export function uploadImage() {
-  
     if (fileInput.files && fileInput.files[0]) 
     {
         const reader = new FileReader();
@@ -51,17 +55,18 @@ export function uploadImage() {
         imagePreview.src = e.target.result;
         };
         reader.readAsDataURL(fileInput.files[0]);
-        Array.from(children).forEach(function (child)
+        Array.from(children).forEach(function(child)
         {
             child.style.display = "none";
             imagePreview.style.display = "flex";
+            inputFile.classList.add("imageOk");
         })
 
     }
   }
 
 //FUNCTION TO GENERATE MODAL GALERRY--------------------------------------
-export function generateImage2(works)
+export function generateModalImage(works)
 {
     for(let i = 0; i < works.length; i++)
     {
@@ -113,48 +118,73 @@ export function generateButton(categories)
 //FUNCTION TO CLOSE MODAL BY CROSS---------------------------------------------
 export function closeByCross()
 {
-crossClose.forEach(trigger => trigger.addEventListener("click", function(e)
-{
-    if (modal === null) return
-    e.preventDefault();
-    modal.style.display = "none";
-    modal.setAttribute("aria-hidden", "true");
-    modal.removeAttribute("aria-modal");
-    modalAdd.style.display = "none";
-    modalAdd.setAttribute("aria-hidden", "true");
-    modalAdd.removeAttribute("aria-modal");
-    document.querySelector(".addTitle").value = "";
-    document.querySelector(".addCategory").value = "";
-    Array.from(children).forEach(function(child)
-    {
-        child.style.display = "flex";
-        imagePreview.src = "#";
-        fileInput.style.display = "none";
-    })
-}
-));
+    crossClose.forEach(function (trigger)
+    { 
+        trigger.addEventListener("click", function(e)
+        {
+            if (modal === null) return
+            e.preventDefault();
+            modal.style.display = "none";
+            modal.setAttribute("aria-hidden", "true");
+            modal.removeAttribute("aria-modal");
+            modalAdd.style.display = "none";
+            modalAdd.setAttribute("aria-hidden", "true");
+            modalAdd.removeAttribute("aria-modal");
+            boxModal.style.display = "none";
+            Array.from(children).forEach(function(child)
+            {
+                child.style.display = "flex";
+                imagePreview.src = "#";
+                fileInput.style.display = "none";
+            })
+        }
+        )
+    });
 }
 
 //FUNCTION TO CLOSE MODAL BY CLICK OUT-------------------------------------------
-export function closeOutModal() {
-    document.addEventListener("click", function(e) {
-      const target = e.target;
-      if (modalWrapper.contains(target) || modalWrapper2.contains(target)) return;
-      if (modal.contains(target) || modalAdd.contains(target)) {
-        modal.style.display = "none";
-        modal.setAttribute("aria-hidden", "true");
-        modal.removeAttribute("aria-modal");
-        modalAdd.style.display = "none";
-        modalAdd.setAttribute("aria-hidden", "true");
-        modalAdd.removeAttribute("aria-modal");
-        document.querySelector(".addTitle").value = "";
-        document.querySelector(".addCategory").value = "";
-        Array.from(children).forEach(function (child)
+export function closeOutModal() 
+{
+    document.addEventListener("click", function(e) 
+    {
+        const target = e.target;
+        if (modalWrapper.contains(target) || modalWrapper2.contains(target)) return;
+        if (modal.contains(target) || modalAdd.contains(target)) 
         {
-            child.style.display = "flex";
-            imagePreview.src = "#";
-            fileInput.style.display = "none";
-        })    
-      }
+            modal.style.display = "none";
+            modal.setAttribute("aria-hidden", "true");
+            modal.removeAttribute("aria-modal");
+            modalAdd.style.display = "none";
+            modalAdd.setAttribute("aria-hidden", "true");
+            modalAdd.removeAttribute("aria-modal");
+            boxModal.style.display = "none";
+            Array.from(children).forEach(function (child)
+            {
+                child.style.display = "flex";
+                imagePreview.src = "#";
+                fileInput.style.display = "none";
+            })    
+        }
     });
-  }
+}
+
+//FUNCTION TO CHECK INPUTS--------------------------------------------------
+
+export function check(){
+    const imageOk = document.querySelector(".imageOk");
+    if(inputCategory.value !== "" && inputTitle.value !== "" && imageOk){
+        modalSend.style.background = "blue";
+    }else{
+        modalSend.style.background = "gray";
+    }
+}
+
+export function reset(){
+    fileInput.type = "text";
+    fileInput.type = "file";
+    inputTitle.value = "";
+    inputCategory.value = "";
+    imagePreview.src = "#";
+    inputFile.classList.remove("imageOk");
+    modalSend.style.background = "gray";
+}
