@@ -11,9 +11,6 @@ const modalValidation = document.querySelector(".modalValidation");
 export const modalWrapper = document.querySelector(".modal-wrapper");
 export const modalWrapper2 = document.querySelector(".modal-wrapper2");
 const arrowLeft = document.querySelector(".fa-arrow-left");
-let itemFilter;
-let apartFilter;
-let hotelFilter;
 let allFilter;
 const modalGallery = document.querySelector(".gallery2");
 let openModal;
@@ -33,6 +30,7 @@ export const inputFile = document.querySelector(".inputFile");
 export const inputTitle = document.querySelector(".addTitle");
 export const inputCategory = document.querySelector(".addCategory");
 export const modalSend = document.getElementById("modalSend");
+const divBoutonsContainer = document.querySelector(".filters");
 
 
 const logged = function ()
@@ -53,6 +51,7 @@ import
     update,
     uploadImage,
     reset,
+    filterImagesById,
     generateModalImage,
     generateButton,
     closeByCross,
@@ -73,43 +72,10 @@ window.onload = async function()
     generateIndexImage(works);
     generateModalImage(works);
     generateButton(categories);
-    itemFilter = document.querySelector(".filter1");
-    apartFilter = document.querySelector(".filter2");
-    hotelFilter = document.querySelector(".filter3");
     allFilter = document.querySelector(".filter");
+    divBoutonsContainer.addEventListener("click", filterImagesById);
+    
 
-//FILTER ITEM---------------------------------------------------------
-itemFilter.addEventListener("click", function()
-{
-    const itemsfilter = works.filter(function (item)
-    {
-        return item.categoryId == 1;
-    })
-    document.querySelector(".gallery").innerHTML = "";
-    generateIndexImage(itemsfilter);
-});
-
-//FILTER APART --------------------------------------------------------
-apartFilter.addEventListener("click", function()
-{
-    const apartsfilter = works.filter(function (apart)
-    {
-        return apart.categoryId == 2;   
-    })
-    document.querySelector(".gallery").innerHTML = "";
-    generateIndexImage(apartsfilter);
-});
-
-//FILTER HOTEL ---------------------------------------------------------
-hotelFilter.addEventListener("click", function()
-{
-    const hotelsfilter = works.filter(function (hotel)
-    {
-        return hotel.categoryId == 3;   
-    })
-    document.querySelector(".gallery").innerHTML = "";
-    generateIndexImage(hotelsfilter);
-});
 
 //FILTER ALL ------------------------------------------------------------
 allFilter.addEventListener("click", function()
