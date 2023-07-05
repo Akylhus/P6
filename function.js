@@ -23,6 +23,7 @@ export function generateIndexImage(works)
     {
         const figureElement = document.createElement("figure");
         const imageElement = document.createElement("img");
+        figureElement.classList.add("image");
         imageElement.src = works[i].imageUrl;
         imageElement.alt = works[i].title;
         const figcaptionElement = document.createElement("figcaption");
@@ -31,6 +32,7 @@ export function generateIndexImage(works)
         divGallery.appendChild(figureElement);
         figureElement.appendChild(imageElement);
         figureElement.appendChild(figcaptionElement);
+        figureElement.dataset.id = works[i].categoryId;
     }
 }    
 
@@ -74,6 +76,7 @@ export function generateModalImage(works)
         const imageElement = document.createElement("img");
         imageElement.src = works[i].imageUrl;
         imageElement.alt = works[i].title;
+        imageElement.classList.add("image");
         const divTrash = document.createElement("div");
         divTrash.classList.add("trash");
         const imageTrash = document.createElement("i");
@@ -112,8 +115,35 @@ export function generateButton(categories)
         divFilter.classList.add("filter"+categories[i].id);
         const divFilters = document.querySelector(".filters");
         divFilters.appendChild(divFilter);
+        divFilter.dataset.id = categories[i].id;
     }    
 }
+
+//FUNCTION TO FILTER IMAGE BY ID -----------------------------------------------
+export function filterImagesById(event) {
+    const filterButton = event.target;
+    const dataId = filterButton.getAttribute("data-id");
+    if(!filterButton.classList.contains("filter")){
+        return;
+    }
+    const images = document.querySelectorAll(".image");
+    images.forEach(function (image) 
+    {
+      const imageId = image.getAttribute("data-id");
+      
+      if(dataId === "none")
+      {
+        return
+      }
+      else if (imageId === dataId) 
+      {
+        image.style.display = "block";
+      } else 
+      {
+        image.style.display = "none";
+      }
+    });
+  }
 
 //FUNCTION TO CLOSE MODAL BY CROSS---------------------------------------------
 export function closeByCross()
